@@ -31,15 +31,13 @@ func main() {
 		}
 		go func(idx int, url string) {
 			defer sem.Release(1)
-			content, err := urlRetriever.Retrieve(url)
+			license, err := urlRetriever.Retrieve(url)
 			if err != nil {
 				fmt.Println("Error retrieving the LICENSE file:", err)
 				return
 			}
-			// print the first line of the content
 			fmt.Println(idx)
-			content = string(content)[:100]
-			fmt.Println(content)
+			fmt.Println(license.LicenseType)
 		}(idx, url)
 	}
 	if err := sem.Acquire(ctx, int64(maxWorkders)); err != nil {
